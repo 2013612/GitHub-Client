@@ -37,6 +37,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -60,4 +61,9 @@ dependencies {
     ktlintRuleset(libs.ktlint.compose)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.androidx.navigation.compose)
+
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.content.negotiation)
+    implementation(libs.ktor.serialization.kotlinx.json)
+    implementation(libs.ktor.ktor.client.logging)
 }
