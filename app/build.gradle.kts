@@ -59,4 +59,5 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     ktlintRuleset(libs.ktlint.compose)
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.androidx.navigation.compose)
 }
