@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 data class RemoteUserProfile(
     val id: Int,
     val login: String,
-    val name: String,
+    val name: String?,
     @SerialName("avatar_url")
     val avatarUrl: String,
     val followers: Int,

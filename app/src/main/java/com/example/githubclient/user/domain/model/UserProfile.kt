@@ -3,7 +3,7 @@ package com.example.githubclient.user.domain.model
 data class UserProfile(
     val id: Int,
     val userName: String,
-    val name: String,
+    val name: String?,
     val avatarUrl: String,
     val followers: Int,
     val following: Int,
