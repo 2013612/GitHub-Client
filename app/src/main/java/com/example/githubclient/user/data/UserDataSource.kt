@@ -1,6 +1,5 @@
 package com.example.githubclient.user.data
 
-import com.example.githubclient.common.data.manager.HttpManager
 import com.example.githubclient.common.data.model.DataError
 import com.example.githubclient.common.data.util.safeCall
 import com.example.githubclient.common.domain.model.ResultWrapper
@@ -14,7 +13,7 @@ import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 
 class UserDataSource(
-    val httpClient: HttpClient = HttpManager.httpClient,
+    val httpClient: HttpClient,
 ) : IUserRepository {
     override suspend fun fetchUserList(
         since: Int,

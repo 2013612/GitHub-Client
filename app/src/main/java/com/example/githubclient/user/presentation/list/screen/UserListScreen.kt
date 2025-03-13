@@ -16,26 +16,31 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.example.githubclient.R
 import com.example.githubclient.theme.GitHubClientTheme
+import com.example.githubclient.user.domain.model.SimpleUser
 import com.example.githubclient.user.presentation.list.model.UserListScreenEvent
 import com.example.githubclient.user.presentation.list.model.UserListScreenState
 import kotlinx.serialization.Serializable
+import org.koin.androidx.compose.koinViewModel
 
 fun NavGraphBuilder.userScreen(navigateToUserDetails: (String) -> Unit) {
     composable<NavUserListScreen> {
+        val viewModel: UserListViewModel = koinViewModel()
+
+        val screenState by viewModel.screenStateFlow.collectAsStateWithLifecycle()
+
         UserListScreen(
-            state =
-                UserListScreenState(
-                    users = listOf("a", "b", "c"),
-                ),
+            state = screenState,
             onEvent = { event ->
                 when (event) {
                     is UserListScreenEvent.OnUserClicked -> navigateToUserDetails(event.user)
@@ -57,13 +62,13 @@ private fun UserListScreen(
 ) {
     Scaffold(topBar = { TopAppBar(title = { Text("GitHub User List") }) }, modifier = modifier) { innerPadding ->
         LazyColumn(modifier = Modifier.padding(innerPadding)) {
-            items(state.users, key = { it }) {
+            items(state.users, key = { it.id }) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier =
                         Modifier
                             .clickable {
-                                onEvent(UserListScreenEvent.OnUserClicked(it))
+                                onEvent(UserListScreenEvent.OnUserClicked(it.userName))
                             }.padding(8.dp)
                             .fillMaxWidth(),
                 ) {
@@ -73,7 +78,7 @@ private fun UserListScreen(
                         modifier = Modifier.height(32.dp),
                     )
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(it)
+                    Text(it.userName)
                 }
                 HorizontalDivider()
             }
@@ -88,7 +93,19 @@ private fun UserListScreenPreview() {
         UserListScreen(
             state =
                 UserListScreenState(
-                    users = listOf("a", "b", "c"),
+                    users =
+                        listOf(
+                            SimpleUser(
+                                id = 1,
+                                userName = "John Doe",
+                                avatarUrl = "https://example.com/avatar.png",
+                            ),
+                            SimpleUser(
+                                id = 2,
+                                userName = "Jane Doe",
+                                avatarUrl = "https://example.com/avatar.png",
+                            ),
+                        ),
                 ),
             onEvent = {},
         )
