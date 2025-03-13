@@ -44,7 +44,7 @@ import com.example.githubclient.user.presentation.list.model.UserListScreenState
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
 
-fun NavGraphBuilder.userScreen(navigateToUserDetails: (String) -> Unit) {
+fun NavGraphBuilder.userListScreen(navigateToUserDetails: (String) -> Unit) {
     composable<NavUserListScreen> {
         val viewModel: UserListViewModel = koinViewModel()
 
