@@ -67,4 +67,7 @@ dependencies {
     implementation(libs.ktor.serialization.kotlinx.json)
     implementation(libs.ktor.ktor.client.logging)
     implementation(libs.ktor.client.okhttp)
+
+    implementation(project.dependencies.platform(libs.koin.bom))
+    implementation(libs.koin.compose)
 }
