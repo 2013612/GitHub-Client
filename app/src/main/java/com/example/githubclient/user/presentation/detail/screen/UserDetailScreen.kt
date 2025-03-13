@@ -28,6 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -36,10 +37,13 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.example.githubclient.R
+import com.example.githubclient.common.presentation.utils.ObserveAsEvents
+import com.example.githubclient.common.presentation.utils.showToast
 import com.example.githubclient.theme.GitHubClientTheme
 import com.example.githubclient.user.domain.model.UserProfile
 import com.example.githubclient.user.presentation.detail.model.UserDetailScreenEvent
 import com.example.githubclient.user.presentation.detail.model.UserDetailScreenState
+import com.example.githubclient.user.presentation.detail.model.UserDetailViewModelEvent
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
 
@@ -48,6 +52,22 @@ fun NavGraphBuilder.userDetailScreen(navigateBack: () -> Unit) {
         val viewModel: UserDetailViewModel = koinViewModel()
 
         val state by viewModel.screenStateFlow.collectAsStateWithLifecycle()
+
+        val context = LocalContext.current
+
+        ObserveAsEvents(viewModel.eventsFlow) { event ->
+            when (event) {
+                is UserDetailViewModelEvent.OnFetchError -> {
+                    if (event.isNoInternetError) {
+                        context.showToast("No internet connection")
+                    } else {
+                        context.showToast("Fetch User Fail")
+                    }
+
+                    navigateBack()
+                }
+            }
+        }
 
         UserDetailScreen(state = state, onEvent = { event ->
             when (event) {
