@@ -22,6 +22,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
@@ -30,10 +31,30 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.compose.composable
 import com.example.githubclient.R
 import com.example.githubclient.theme.GitHubClientTheme
 import com.example.githubclient.user.domain.model.UserProfile
 import com.example.githubclient.user.presentation.detail.model.UserDetailScreenState
+import kotlinx.serialization.Serializable
+import org.koin.androidx.compose.koinViewModel
+
+fun NavGraphBuilder.userDetailScreen(navigateBack: () -> Unit) {
+    composable<NavUserDetailScreen> {
+        val viewModel: UserDetailViewModel = koinViewModel()
+
+        val state by viewModel.screenStateFlow.collectAsStateWithLifecycle()
+
+        UserDetailScreen(state = state)
+    }
+}
+
+@Serializable
+data class NavUserDetailScreen(
+    val userName: String,
+)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -62,11 +83,13 @@ private fun UserDetailScreen(
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Column {
-                        Text(
-                            text = state.profile.name,
-                            style = MaterialTheme.typography.headlineSmall,
-                            fontWeight = FontWeight.Bold,
-                        )
+                        state.profile.name?.let {
+                            Text(
+                                text = it,
+                                style = MaterialTheme.typography.headlineSmall,
+                                fontWeight = FontWeight.Bold,
+                            )
+                        }
                         Text(
                             text = state.profile.userName,
                             style = MaterialTheme.typography.titleSmall,
