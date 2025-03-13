@@ -18,6 +18,7 @@ import androidx.compose.material.icons.rounded.Face
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -37,6 +38,7 @@ import androidx.navigation.compose.composable
 import com.example.githubclient.R
 import com.example.githubclient.theme.GitHubClientTheme
 import com.example.githubclient.user.domain.model.UserProfile
+import com.example.githubclient.user.presentation.detail.model.UserDetailScreenEvent
 import com.example.githubclient.user.presentation.detail.model.UserDetailScreenState
 import kotlinx.serialization.Serializable
 import org.koin.androidx.compose.koinViewModel
@@ -47,7 +49,13 @@ fun NavGraphBuilder.userDetailScreen(navigateBack: () -> Unit) {
 
         val state by viewModel.screenStateFlow.collectAsStateWithLifecycle()
 
-        UserDetailScreen(state = state)
+        UserDetailScreen(state = state, onEvent = { event ->
+            {
+                when (event) {
+                    UserDetailScreenEvent.OnBackClicked -> navigateBack()
+                }
+            }
+        })
     }
 }
 
@@ -60,16 +68,19 @@ data class NavUserDetailScreen(
 @Composable
 private fun UserDetailScreen(
     state: UserDetailScreenState,
+    onEvent: (UserDetailScreenEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Scaffold(topBar = {
         CenterAlignedTopAppBar(
             title = { Text("User Detail") },
             navigationIcon = {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = "back button",
-                )
+                IconButton(onClick = { onEvent(UserDetailScreenEvent.OnBackClicked) }) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = "back button",
+                    )
+                }
             },
         )
     }, modifier = modifier) { innerPadding ->
@@ -182,6 +193,7 @@ private fun UserDetailScreenPreview() {
                             twitterUsername = "twitterUsername",
                         ),
                 ),
+            onEvent = {},
         )
     }
 }
