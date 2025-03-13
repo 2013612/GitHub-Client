@@ -70,4 +70,7 @@ dependencies {
 
     implementation(project.dependencies.platform(libs.koin.bom))
     implementation(libs.koin.compose)
+
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network.okhttp)
 }

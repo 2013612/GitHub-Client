@@ -19,7 +19,6 @@ import androidx.compose.material.icons.rounded.Face
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -31,13 +30,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.example.githubclient.R
+import coil3.compose.AsyncImage
 import com.example.githubclient.theme.GitHubClientTheme
 import com.example.githubclient.user.domain.model.SimpleUser
 import com.example.githubclient.user.presentation.list.model.ListState
@@ -107,11 +105,7 @@ private fun UserListScreen(
                             }.padding(8.dp)
                             .fillMaxWidth(),
                 ) {
-                    Image(
-                        painter = painterResource(R.drawable.ic_launcher_foreground),
-                        contentDescription = null,
-                        modifier = Modifier.height(32.dp),
-                    )
+                    AsyncImage(model = it.avatarUrl, contentDescription = null, modifier = Modifier.height(64.dp))
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(it.userName)
                 }
@@ -163,7 +157,7 @@ private fun UserListScreen(
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.Center,
                         ) {
-                            Icon(
+                            Image(
                                 imageVector = Icons.Rounded.Face,
                                 contentDescription = "",
                             )
@@ -198,7 +192,7 @@ private fun UserListScreenPreview() {
                                 avatarUrl = "https://example.com/avatar.png",
                             ),
                         ),
-                    listState = ListState.PAGINATING,
+                    listState = ListState.PAGINATION_EXHAUST,
                 ),
             onEvent = {},
         )
