@@ -50,10 +50,8 @@ fun NavGraphBuilder.userDetailScreen(navigateBack: () -> Unit) {
         val state by viewModel.screenStateFlow.collectAsStateWithLifecycle()
 
         UserDetailScreen(state = state, onEvent = { event ->
-            {
-                when (event) {
-                    UserDetailScreenEvent.OnBackClicked -> navigateBack()
-                }
+            when (event) {
+                UserDetailScreenEvent.OnBackClicked -> navigateBack()
             }
         })
     }
