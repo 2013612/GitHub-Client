@@ -6,6 +6,6 @@ import com.example.githubclient.user.domain.model.SimpleUser
 fun RemoteSimpleUser.toSimpleUser(): SimpleUser =
     SimpleUser(
         id = id,
-        login = login,
+        userName = login,
         avatarUrl = avatarUrl,
     )
