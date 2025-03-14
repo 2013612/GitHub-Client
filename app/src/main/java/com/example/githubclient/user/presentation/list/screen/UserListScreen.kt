@@ -110,7 +110,13 @@ private fun UserListScreen(
         PullToRefreshBox(isRefreshing = state.listState == ListState.LOADING, state = rememberPullToRefreshState(), onRefresh = {
             onEvent(UserListScreenEvent.OnRefresh)
         }) {
-            LazyColumn(state = lazyListState, modifier = Modifier.padding(innerPadding).fillMaxSize()) {
+            LazyColumn(
+                state = lazyListState,
+                modifier =
+                    Modifier
+                        .padding(innerPadding)
+                        .fillMaxSize(),
+            ) {
                 items(state.users, key = { it.id }) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
@@ -123,14 +129,16 @@ private fun UserListScreen(
                     ) {
                         AsyncImage(
                             model = it.avatarUrl,
-                            contentDescription = null,
+                            contentDescription = "${it.userName}'s avatar",
                             placeholder = painterResource(R.drawable.github_mark),
                             error = painterResource(R.drawable.github_mark),
                             fallback = painterResource(R.drawable.github_mark),
                             modifier =
-                                Modifier.size(64.dp).clip(
-                                    CircleShape,
-                                ),
+                                Modifier
+                                    .size(64.dp)
+                                    .clip(
+                                        CircleShape,
+                                    ),
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(it.userName)

@@ -115,7 +115,7 @@ private fun UserDetailScreen(
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     AsyncImage(
                         model = state.profile.avatarUrl,
-                        contentDescription = null,
+                        contentDescription = "${state.profile.userName}'s avatar",
                         placeholder = painterResource(R.drawable.github_mark),
                         error = painterResource(R.drawable.github_mark),
                         fallback = painterResource(R.drawable.github_mark),
