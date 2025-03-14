@@ -50,3 +50,14 @@ enum class RemoteUserEventType {
     WatchEvent,
     Unknown,
 }
+
+enum class RemoteGitRefType {
+    @SerialName("branch")
+    Branch,
+
+    @SerialName("tag")
+    Tag,
+
+    @SerialName("repository")
+    Repository,
+}

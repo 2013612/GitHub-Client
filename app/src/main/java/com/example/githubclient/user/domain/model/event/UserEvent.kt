@@ -7,3 +7,9 @@ sealed class UserEvent {
 
     abstract fun getEventDesc(): String
 }
+
+enum class GitRefType {
+    Branch,
+    Tag,
+    Repository,
+}
