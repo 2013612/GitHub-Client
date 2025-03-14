@@ -1,6 +1,5 @@
 package com.example.githubclient.user.presentation.detail.screen
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -8,13 +7,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.rounded.Face
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -23,10 +22,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -36,6 +39,11 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import coil3.ColorImage
+import coil3.annotation.ExperimentalCoilApi
+import coil3.compose.AsyncImage
+import coil3.compose.AsyncImagePreviewHandler
+import coil3.compose.LocalAsyncImagePreviewHandler
 import com.example.githubclient.R
 import com.example.githubclient.common.presentation.utils.ObserveAsEvents
 import com.example.githubclient.common.presentation.utils.showToast
@@ -105,10 +113,13 @@ private fun UserDetailScreen(
         Column(modifier = Modifier.padding(innerPadding).padding(horizontal = 8.dp)) {
             if (state.profile != null) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Image(
-                        imageVector = Icons.Rounded.Face,
+                    AsyncImage(
+                        model = state.profile.avatarUrl,
                         contentDescription = null,
-                        modifier = Modifier.size(72.dp),
+                        modifier =
+                            Modifier.size(64.dp).clip(
+                                CircleShape,
+                            ),
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Column {
@@ -189,29 +200,37 @@ private fun DetailRow(
     }
 }
 
+@OptIn(ExperimentalCoilApi::class)
 @Preview
 @Composable
 private fun UserDetailScreenPreview() {
+    val previewHandler =
+        AsyncImagePreviewHandler {
+            ColorImage(Color.Red.toArgb())
+        }
+
     GitHubClientTheme {
-        UserDetailScreen(
-            state =
-                UserDetailScreenState(
-                    profile =
-                        UserProfile(
-                            id = 1,
-                            userName = "John Doe",
-                            name = "John Doe",
-                            avatarUrl = "https://example.com/avatar.png",
-                            followers = 10,
-                            following = 20,
-                            company = "Example Inc.",
-                            location = "Exampleville",
-                            email = "james.monroe@examplepetstore.com",
-                            blog = "blog",
-                            twitterUsername = "twitterUsername",
-                        ),
-                ),
-            onEvent = {},
-        )
+        CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
+            UserDetailScreen(
+                state =
+                    UserDetailScreenState(
+                        profile =
+                            UserProfile(
+                                id = 1,
+                                userName = "John Doe",
+                                name = "John Doe",
+                                avatarUrl = "https://example.com/avatar.png",
+                                followers = 10,
+                                following = 20,
+                                company = "Example Inc.",
+                                location = "Exampleville",
+                                email = "james.monroe@examplepetstore.com",
+                                blog = "blog",
+                                twitterUsername = "twitterUsername",
+                            ),
+                    ),
+                onEvent = {},
+            )
+        }
     }
 }
