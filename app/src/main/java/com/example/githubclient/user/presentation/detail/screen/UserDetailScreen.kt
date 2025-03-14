@@ -1,5 +1,6 @@
 package com.example.githubclient.user.presentation.detail.screen
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -10,7 +11,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Person
@@ -147,7 +147,7 @@ private fun UserDetailScreen(
                 }
 
                 state.profile.company?.let {
-                    DetailRow(icon = painterResource(R.drawable.baseline_domain_24), text = it)
+                    DetailRow(painter = painterResource(R.drawable.baseline_domain_24), text = it)
                 }
 
                 state.profile.location?.let {
@@ -159,11 +159,11 @@ private fun UserDetailScreen(
                 }
 
                 state.profile.blog?.let {
-                    DetailRow(icon = painterResource(R.drawable.baseline_link_24), text = it)
+                    DetailRow(painter = painterResource(R.drawable.baseline_link_24), text = it)
                 }
 
                 state.profile.twitterUsername?.let {
-                    DetailRow(icon = Icons.Default.Build, text = it)
+                    DetailRow(painter = painterResource(R.drawable.x_twitter_brands_solid), text = it)
                 }
             }
         }
@@ -187,13 +187,13 @@ private fun DetailRow(
 
 @Composable
 private fun DetailRow(
-    icon: Painter,
+    painter: Painter,
     text: String,
 ) {
     Column {
         Spacer(modifier = Modifier.height(8.dp))
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(painter = icon, contentDescription = null)
+            Image(painter = painter, contentDescription = null, modifier = Modifier.size(24.dp))
             Spacer(modifier = Modifier.width(8.dp))
             Text(text = text)
         }
