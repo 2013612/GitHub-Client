@@ -61,3 +61,14 @@ enum class RemoteGitRefType {
     @SerialName("repository")
     Repository,
 }
+
+enum class RemoteCommentAction {
+    @SerialName("created")
+    Created,
+
+    @SerialName("edited")
+    Edited,
+
+    @SerialName("deleted")
+    Deleted,
+}
