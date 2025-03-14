@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -16,6 +18,7 @@ import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -48,6 +51,7 @@ import com.example.githubclient.R
 import com.example.githubclient.common.presentation.utils.ObserveAsEvents
 import com.example.githubclient.common.presentation.utils.showToast
 import com.example.githubclient.theme.GitHubClientTheme
+import com.example.githubclient.user.domain.model.UserEvent
 import com.example.githubclient.user.domain.model.UserProfile
 import com.example.githubclient.user.presentation.detail.model.UserDetailScreenEvent
 import com.example.githubclient.user.presentation.detail.model.UserDetailScreenState
@@ -110,64 +114,76 @@ private fun UserDetailScreen(
             },
         )
     }, modifier = modifier) { innerPadding ->
-        Column(modifier = Modifier.padding(innerPadding).padding(horizontal = 8.dp)) {
-            if (state.profile != null) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    AsyncImage(
-                        model = state.profile.avatarUrl,
-                        contentDescription = "${state.profile.userName}'s avatar",
-                        placeholder = painterResource(R.drawable.github_mark),
-                        error = painterResource(R.drawable.github_mark),
-                        fallback = painterResource(R.drawable.github_mark),
-                        modifier =
-                            Modifier.size(64.dp).clip(
-                                CircleShape,
-                            ),
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Column {
-                        state.profile.name?.let {
-                            Text(
-                                text = it,
-                                style = MaterialTheme.typography.headlineSmall,
-                                fontWeight = FontWeight.Bold,
+        LazyColumn(modifier = Modifier.padding(innerPadding).padding(horizontal = 8.dp)) {
+            item {
+                Column {
+                    if (state.profile != null) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            AsyncImage(
+                                model = state.profile.avatarUrl,
+                                contentDescription = "${state.profile.userName}'s avatar",
+                                placeholder = painterResource(R.drawable.github_mark),
+                                error = painterResource(R.drawable.github_mark),
+                                fallback = painterResource(R.drawable.github_mark),
+                                modifier =
+                                    Modifier.size(64.dp).clip(
+                                        CircleShape,
+                                    ),
                             )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Column {
+                                state.profile.name?.let {
+                                    Text(
+                                        text = it,
+                                        style = MaterialTheme.typography.headlineSmall,
+                                        fontWeight = FontWeight.Bold,
+                                    )
+                                }
+                                Text(
+                                    text = state.profile.userName,
+                                    style = MaterialTheme.typography.titleSmall,
+                                )
+                            }
                         }
-                        Text(
-                            text = state.profile.userName,
-                            style = MaterialTheme.typography.titleSmall,
-                        )
+                        Spacer(modifier = Modifier.height(24.dp))
+
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Icon(imageVector = Icons.Default.Person, contentDescription = null)
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(text = "${state.profile.followers} followers")
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(text = "${state.profile.following} following")
+                        }
+
+                        state.profile.company?.let {
+                            DetailRow(painter = painterResource(R.drawable.baseline_domain_24), text = it)
+                        }
+
+                        state.profile.location?.let {
+                            DetailRow(icon = Icons.Default.LocationOn, text = it)
+                        }
+
+                        state.profile.email?.let {
+                            DetailRow(icon = Icons.Default.Email, text = it)
+                        }
+
+                        state.profile.blog?.let {
+                            DetailRow(painter = painterResource(R.drawable.baseline_link_24), text = it)
+                        }
+
+                        state.profile.twitterUsername?.let {
+                            DetailRow(painter = painterResource(R.drawable.x_twitter_brands_solid), text = it)
+                        }
                     }
                 }
-                Spacer(modifier = Modifier.height(24.dp))
+            }
 
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(imageVector = Icons.Default.Person, contentDescription = null)
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = "${state.profile.followers} followers")
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = "${state.profile.following} following")
-                }
+            item {
+                HorizontalDivider(Modifier.padding(vertical = 8.dp))
+            }
 
-                state.profile.company?.let {
-                    DetailRow(painter = painterResource(R.drawable.baseline_domain_24), text = it)
-                }
-
-                state.profile.location?.let {
-                    DetailRow(icon = Icons.Default.LocationOn, text = it)
-                }
-
-                state.profile.email?.let {
-                    DetailRow(icon = Icons.Default.Email, text = it)
-                }
-
-                state.profile.blog?.let {
-                    DetailRow(painter = painterResource(R.drawable.baseline_link_24), text = it)
-                }
-
-                state.profile.twitterUsername?.let {
-                    DetailRow(painter = painterResource(R.drawable.x_twitter_brands_solid), text = it)
-                }
+            items(state.events, key = { it.id }) { event ->
+                EventRow(time = event.time, eventDesc = event.eventDesc)
             }
         }
     }
@@ -203,6 +219,19 @@ private fun DetailRow(
     }
 }
 
+@Composable
+private fun EventRow(
+    time: String,
+    eventDesc: String,
+    modifier: Modifier = Modifier,
+) {
+    Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
+        Text(text = time)
+        Spacer(modifier = Modifier.width(8.dp))
+        Text(text = eventDesc)
+    }
+}
+
 @OptIn(ExperimentalCoilApi::class)
 @Preview
 @Composable
@@ -230,6 +259,20 @@ private fun UserDetailScreenPreview() {
                                 email = "james.monroe@examplepetstore.com",
                                 blog = "blog",
                                 twitterUsername = "twitterUsername",
+                            ),
+                        // Add more events as needed
+                        events =
+                            listOf(
+                                UserEvent(
+                                    id = "1",
+                                    time = "time 1",
+                                    eventDesc = "Event 1",
+                                ),
+                                UserEvent(
+                                    id = "2",
+                                    time = "time 2",
+                                    eventDesc = "Event 2",
+                                ),
                             ),
                     ),
                 onEvent = {},
