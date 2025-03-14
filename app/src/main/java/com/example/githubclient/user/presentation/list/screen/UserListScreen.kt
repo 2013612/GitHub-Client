@@ -25,6 +25,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -32,12 +33,18 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import coil3.ColorImage
+import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImage
+import coil3.compose.AsyncImagePreviewHandler
+import coil3.compose.LocalAsyncImagePreviewHandler
 import com.example.githubclient.theme.GitHubClientTheme
 import com.example.githubclient.user.domain.model.SimpleUser
 import com.example.githubclient.user.presentation.list.model.ListState
@@ -178,29 +185,37 @@ private fun UserListScreen(
     }
 }
 
+@OptIn(ExperimentalCoilApi::class)
 @Preview
 @Composable
 private fun UserListScreenPreview() {
+    val previewHandler =
+        AsyncImagePreviewHandler {
+            ColorImage(Color.Red.toArgb())
+        }
+
     GitHubClientTheme {
-        UserListScreen(
-            state =
-                UserListScreenState(
-                    users =
-                        listOf(
-                            SimpleUser(
-                                id = 1,
-                                userName = "John Doe",
-                                avatarUrl = "https://example.com/avatar.png",
+        CompositionLocalProvider(LocalAsyncImagePreviewHandler provides previewHandler) {
+            UserListScreen(
+                state =
+                    UserListScreenState(
+                        users =
+                            listOf(
+                                SimpleUser(
+                                    id = 1,
+                                    userName = "John Doe",
+                                    avatarUrl = "https://example.com/avatar.png",
+                                ),
+                                SimpleUser(
+                                    id = 2,
+                                    userName = "Jane Doe",
+                                    avatarUrl = "https://example.com/avatar.png",
+                                ),
                             ),
-                            SimpleUser(
-                                id = 2,
-                                userName = "Jane Doe",
-                                avatarUrl = "https://example.com/avatar.png",
-                            ),
-                        ),
-                    listState = ListState.PAGINATION_EXHAUST,
-                ),
-            onEvent = {},
-        )
+                        listState = ListState.PAGINATION_EXHAUST,
+                    ),
+                onEvent = {},
+            )
+        }
     }
 }
