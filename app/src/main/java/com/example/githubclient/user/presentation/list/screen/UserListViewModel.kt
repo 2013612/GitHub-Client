@@ -28,7 +28,8 @@ class UserListViewModel(
     fun onEvent(event: UserListScreenEvent) {
         when (event) {
             is UserListScreenEvent.OnLoadMore -> loadUsers(since = lastUserId)
-            else -> {}
+            is UserListScreenEvent.OnRefresh -> loadUsers(since = 0)
+            is UserListScreenEvent.OnUserClicked -> {}
         }
     }
 

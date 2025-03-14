@@ -22,6 +22,8 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -94,78 +96,82 @@ private fun UserListScreen(
     }
 
     Scaffold(topBar = { TopAppBar(title = { Text("GitHub User List") }) }, modifier = modifier) { innerPadding ->
-        LazyColumn(state = lazyListState, modifier = Modifier.padding(innerPadding).fillMaxSize()) {
-            items(state.users, key = { it.id }) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier =
-                        Modifier
-                            .clickable {
-                                onEvent(UserListScreenEvent.OnUserClicked(it.userName))
-                            }.padding(8.dp)
-                            .fillMaxWidth(),
-                ) {
-                    AsyncImage(model = it.avatarUrl, contentDescription = null, modifier = Modifier.height(64.dp))
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(it.userName)
+        PullToRefreshBox(isRefreshing = state.listState == ListState.LOADING, state = rememberPullToRefreshState(), onRefresh = {
+            onEvent(UserListScreenEvent.OnRefresh)
+        }) {
+            LazyColumn(state = lazyListState, modifier = Modifier.padding(innerPadding).fillMaxSize()) {
+                items(state.users, key = { it.id }) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier =
+                            Modifier
+                                .clickable {
+                                    onEvent(UserListScreenEvent.OnUserClicked(it.userName))
+                                }.padding(8.dp)
+                                .fillMaxWidth(),
+                    ) {
+                        AsyncImage(model = it.avatarUrl, contentDescription = null, modifier = Modifier.height(64.dp))
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(it.userName)
+                    }
+                    HorizontalDivider()
                 }
-                HorizontalDivider()
-            }
 
-            item(
-                key = state.listState,
-            ) {
-                when (state.listState) {
-                    ListState.LOADING -> {
-                        Column(
-                            modifier =
-                                Modifier
-                                    .fillParentMaxSize(),
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.Center,
-                        ) {
-                            Text(
+                item(
+                    key = state.listState,
+                ) {
+                    when (state.listState) {
+                        ListState.LOADING -> {
+                            Column(
                                 modifier =
                                     Modifier
-                                        .padding(8.dp),
-                                text = "Refresh Loading",
-                            )
+                                        .fillParentMaxSize(),
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center,
+                            ) {
+                                Text(
+                                    modifier =
+                                        Modifier
+                                            .padding(8.dp),
+                                    text = "Refresh Loading",
+                                )
 
-                            CircularProgressIndicator()
+                                CircularProgressIndicator()
+                            }
                         }
-                    }
-                    ListState.PAGINATING -> {
-                        Column(
-                            modifier =
-                                Modifier
-                                    .fillMaxWidth()
-                                    .padding(vertical = 16.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.Center,
-                        ) {
-                            Text(text = "Pagination Loading")
+                        ListState.PAGINATING -> {
+                            Column(
+                                modifier =
+                                    Modifier
+                                        .fillMaxWidth()
+                                        .padding(vertical = 16.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center,
+                            ) {
+                                Text(text = "Pagination Loading")
 
-                            CircularProgressIndicator()
+                                CircularProgressIndicator()
+                            }
                         }
-                    }
-                    ListState.PAGINATION_EXHAUST -> {
-                        Column(
-                            modifier =
-                                Modifier
-                                    .fillMaxWidth()
-                                    .padding(horizontal = 6.dp, vertical = 16.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.Center,
-                        ) {
-                            Image(
-                                imageVector = Icons.Rounded.Face,
-                                contentDescription = "",
-                            )
+                        ListState.PAGINATION_EXHAUST -> {
+                            Column(
+                                modifier =
+                                    Modifier
+                                        .fillMaxWidth()
+                                        .padding(horizontal = 6.dp, vertical = 16.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center,
+                            ) {
+                                Image(
+                                    imageVector = Icons.Rounded.Face,
+                                    contentDescription = "",
+                                )
 
-                            Text(text = "Nothing left.")
+                                Text(text = "Nothing left.")
+                            }
                         }
+                        else -> {}
                     }
-                    else -> {}
                 }
             }
         }

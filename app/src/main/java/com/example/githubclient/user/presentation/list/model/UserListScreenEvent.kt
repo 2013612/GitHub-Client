@@ -6,4 +6,6 @@ sealed interface UserListScreenEvent {
     ) : UserListScreenEvent
 
     data object OnLoadMore : UserListScreenEvent
+
+    data object OnRefresh : UserListScreenEvent
 }
