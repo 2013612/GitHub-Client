@@ -6,6 +6,7 @@ import com.example.githubclient.user.data.model.event.RemoteDeleteEventPayload
 import com.example.githubclient.user.data.model.event.RemoteForkEventPayload
 import com.example.githubclient.user.data.model.event.RemoteGollumEventPayload
 import com.example.githubclient.user.data.model.event.RemoteIssueCommentEventPayload
+import com.example.githubclient.user.data.model.event.RemoteIssuesEventPayload
 import com.example.githubclient.user.data.model.event.RemotePublicUserEvent
 import com.example.githubclient.user.domain.model.event.CommitCommentEvent
 import com.example.githubclient.user.domain.model.event.CreateEvent
@@ -13,6 +14,7 @@ import com.example.githubclient.user.domain.model.event.DeleteEvent
 import com.example.githubclient.user.domain.model.event.ForkEvent
 import com.example.githubclient.user.domain.model.event.GollumEvent
 import com.example.githubclient.user.domain.model.event.IssueCommentEvent
+import com.example.githubclient.user.domain.model.event.IssuesEvent
 import com.example.githubclient.user.domain.model.event.UserEvent
 
 fun RemotePublicUserEvent.toUserEvent(): UserEvent? =
@@ -57,6 +59,14 @@ fun RemotePublicUserEvent.toUserEvent(): UserEvent? =
                 id = id,
                 time = createdAt,
                 action = payload.action.toCommentAction(),
+                issueName = payload.issue.title,
+                repoName = repo.name,
+            )
+        is RemoteIssuesEventPayload ->
+            IssuesEvent(
+                id = id,
+                time = createdAt,
+                action = payload.action.toIssueAction(),
                 issueName = payload.issue.title,
                 repoName = repo.name,
             )
