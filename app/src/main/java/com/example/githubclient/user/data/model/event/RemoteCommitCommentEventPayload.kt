@@ -1,15 +1,15 @@
-package com.example.githubclient.user.data.model
+package com.example.githubclient.user.data.model.event
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class CommitCommentEventPayload(
-    val action: CommentAction,
-    val comment: CommitComment,
-) : Payload()
+data class RemoteCommitCommentEventPayload(
+    val action: RemoteCommentAction,
+    val comment: RemoteCommitComment,
+) : RemoteUserEventPayload()
 
-enum class CommentAction {
+enum class RemoteCommentAction {
     @SerialName("created")
     Created,
 
@@ -21,7 +21,7 @@ enum class CommentAction {
 }
 
 @Serializable
-data class CommitComment(
+data class RemoteCommitComment(
     val htmlUrl: String,
     val id: Long,
     val commitId: String,

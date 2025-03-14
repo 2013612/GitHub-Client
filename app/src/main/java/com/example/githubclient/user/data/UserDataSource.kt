@@ -7,9 +7,9 @@ import com.example.githubclient.common.domain.model.map
 import com.example.githubclient.user.data.mapper.toSimpleUser
 import com.example.githubclient.user.data.mapper.toUserEvent
 import com.example.githubclient.user.data.mapper.toUserProfile
-import com.example.githubclient.user.data.model.RemotePublicUserEvent
 import com.example.githubclient.user.data.model.RemoteSimpleUser
 import com.example.githubclient.user.data.model.RemoteUserProfile
+import com.example.githubclient.user.data.model.event.RemotePublicUserEvent
 import com.example.githubclient.user.domain.IUserRepository
 import com.example.githubclient.user.domain.model.SimpleUser
 import com.example.githubclient.user.domain.model.UserProfile
