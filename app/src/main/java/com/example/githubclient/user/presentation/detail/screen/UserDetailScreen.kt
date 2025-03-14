@@ -51,8 +51,8 @@ import com.example.githubclient.R
 import com.example.githubclient.common.presentation.utils.ObserveAsEvents
 import com.example.githubclient.common.presentation.utils.showToast
 import com.example.githubclient.theme.GitHubClientTheme
-import com.example.githubclient.user.domain.model.UserEvent
 import com.example.githubclient.user.domain.model.UserProfile
+import com.example.githubclient.user.domain.model.event.CommitCommentEvent
 import com.example.githubclient.user.presentation.detail.model.UserDetailScreenEvent
 import com.example.githubclient.user.presentation.detail.model.UserDetailScreenState
 import com.example.githubclient.user.presentation.detail.model.UserDetailViewModelEvent
@@ -182,8 +182,8 @@ private fun UserDetailScreen(
                 HorizontalDivider(Modifier.padding(vertical = 8.dp))
             }
 
-            items(state.events, key = { it.id }) { event ->
-                EventRow(time = event.time, eventDesc = event.eventDesc)
+            items(state.events, key = { it.getEventId() }) { event ->
+                EventRow(time = event.getEventTime(), eventDesc = event.getEventDesc())
             }
         }
     }
@@ -263,15 +263,17 @@ private fun UserDetailScreenPreview() {
                         // Add more events as needed
                         events =
                             listOf(
-                                UserEvent(
+                                CommitCommentEvent(
                                     id = "1",
                                     time = "time 1",
-                                    eventDesc = "Event 1",
+                                    commitId = "commitId 1",
+                                    repoName = "repoName 1",
                                 ),
-                                UserEvent(
+                                CommitCommentEvent(
                                     id = "2",
                                     time = "time 2",
-                                    eventDesc = "Event 2",
+                                    commitId = "commitId 2",
+                                    repoName = "repoName 2",
                                 ),
                             ),
                     ),

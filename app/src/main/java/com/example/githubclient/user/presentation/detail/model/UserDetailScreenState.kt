@@ -1,7 +1,7 @@
 package com.example.githubclient.user.presentation.detail.model
 
-import com.example.githubclient.user.domain.model.UserEvent
 import com.example.githubclient.user.domain.model.UserProfile
+import com.example.githubclient.user.domain.model.event.UserEvent
 
 data class UserDetailScreenState(
     val profile: UserProfile? = null,
