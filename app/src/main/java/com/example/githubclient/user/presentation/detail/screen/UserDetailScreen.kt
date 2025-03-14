@@ -116,6 +116,9 @@ private fun UserDetailScreen(
                     AsyncImage(
                         model = state.profile.avatarUrl,
                         contentDescription = null,
+                        placeholder = painterResource(R.drawable.github_mark),
+                        error = painterResource(R.drawable.github_mark),
+                        fallback = painterResource(R.drawable.github_mark),
                         modifier =
                             Modifier.size(64.dp).clip(
                                 CircleShape,

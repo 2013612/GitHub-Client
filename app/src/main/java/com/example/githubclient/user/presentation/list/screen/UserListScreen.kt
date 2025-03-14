@@ -1,6 +1,5 @@
 package com.example.githubclient.user.presentation.list.screen
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,6 +19,7 @@ import androidx.compose.material.icons.rounded.Face
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -37,6 +37,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -47,6 +48,7 @@ import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImage
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
+import com.example.githubclient.R
 import com.example.githubclient.theme.GitHubClientTheme
 import com.example.githubclient.user.domain.model.SimpleUser
 import com.example.githubclient.user.presentation.list.model.ListState
@@ -122,6 +124,9 @@ private fun UserListScreen(
                         AsyncImage(
                             model = it.avatarUrl,
                             contentDescription = null,
+                            placeholder = painterResource(R.drawable.github_mark),
+                            error = painterResource(R.drawable.github_mark),
+                            fallback = painterResource(R.drawable.github_mark),
                             modifier =
                                 Modifier.size(64.dp).clip(
                                     CircleShape,
@@ -178,7 +183,7 @@ private fun UserListScreen(
                                 horizontalAlignment = Alignment.CenterHorizontally,
                                 verticalArrangement = Arrangement.Center,
                             ) {
-                                Image(
+                                Icon(
                                     imageVector = Icons.Rounded.Face,
                                     contentDescription = "",
                                 )
