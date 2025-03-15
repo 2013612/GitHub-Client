@@ -45,4 +45,6 @@
     <string name="release_event_desc">在 %1$s 中發佈了版本</string>
     <string name="sponsorship_event_desc">在 %1$s 中建立了贊助</string>
     <string name="watch_event_desc">關注了 %1$s</string>
+    <string name="num_followers">%1$s 追蹤者</string>
+    <string name="num_following">%1$s 追蹤中</string>
 </resources>

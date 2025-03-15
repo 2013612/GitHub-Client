@@ -25,6 +25,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -46,14 +47,16 @@ fun UserDetailProfile(
         Row(verticalAlignment = Alignment.CenterVertically) {
             AsyncImage(
                 model = profile.avatarUrl,
-                contentDescription = "${profile.userName}'s avatar",
+                contentDescription = stringResource(R.string.avatar_content_desc, profile.userName),
                 placeholder = painterResource(R.drawable.github_mark),
                 error = painterResource(R.drawable.github_mark),
                 fallback = painterResource(R.drawable.github_mark),
                 modifier =
-                    Modifier.size(64.dp).clip(
-                        CircleShape,
-                    ),
+                    Modifier
+                        .size(64.dp)
+                        .clip(
+                            CircleShape,
+                        ),
             )
             Spacer(modifier = Modifier.width(8.dp))
             Column {
@@ -75,9 +78,9 @@ fun UserDetailProfile(
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(imageVector = Icons.Default.Person, contentDescription = null)
             Spacer(modifier = Modifier.width(8.dp))
-            Text(text = "${profile.followers} followers")
+            Text(text = stringResource(R.string.num_followers, profile.followers))
             Spacer(modifier = Modifier.width(8.dp))
-            Text(text = "${profile.following} following")
+            Text(text = stringResource(R.string.num_following, profile.following))
         }
 
         profile.company?.let {

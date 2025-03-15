@@ -44,4 +44,6 @@
     <string name="release_event_desc">Published a release in %1$s</string>
     <string name="sponsorship_event_desc">Created a sponsorship in %1$s</string>
     <string name="watch_event_desc">Stared %1$s</string>
+    <string name="num_followers">%1$s followers</string>
+    <string name="num_following">%1$s following</string>
 </resources>

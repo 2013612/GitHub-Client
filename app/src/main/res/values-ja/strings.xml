@@ -45,4 +45,6 @@
     <string name="release_event_desc">%1$sにリリースを公開しました</string>
     <string name="sponsorship_event_desc">%1$sにスポンサーシップを作成しました</string>
     <string name="watch_event_desc">%1$sをスターしました</string>
+    <string name="num_followers">%1$s フォロワー</string>
+    <string name="num_following">%1$s フォロー中</string>
 </resources>
