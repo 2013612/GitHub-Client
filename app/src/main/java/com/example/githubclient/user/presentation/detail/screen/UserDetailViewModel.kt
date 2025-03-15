@@ -58,7 +58,7 @@ class UserDetailViewModel(
     }
 
     private fun fetchUserEvents() {
-        val userName = routeArguments.userName
+        val userName = "kenkoooo"
         val paginationState = screenStateFlow.value.paginationState
 
         when (paginationState) {
@@ -85,7 +85,7 @@ class UserDetailViewModel(
                         it.copy(
                             events = it.events + newEvents,
                             paginationState =
-                                if (newEvents.size < PAGE_SIZE) {
+                                if (newEvents.isEmpty()) {
                                     PaginationState.PAGINATION_EXHAUST
                                 } else {
                                     PaginationState.IDLE
