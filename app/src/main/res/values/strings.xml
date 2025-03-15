@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">GitHub Client</string>
+    <string name="github_user_list">GitHub User List</string>
+    <string name="avatar_content_desc">%1$s\'s avatar</string>
+    <string name="refresh_loading">Refresh Loading</string>
+    <string name="pagination_loading">Pagination Loading</string>
+    <string name="nothing_left">Nothing Left</string>
 </resources>

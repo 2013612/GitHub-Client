@@ -37,7 +37,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -87,6 +89,7 @@ private fun UserListScreen(
 ) {
     val lazyListState = rememberLazyListState()
     val latestOnEvent by rememberUpdatedState(onEvent)
+    val context = LocalContext.current
 
     val shouldStartPaginate =
         remember {
@@ -106,10 +109,17 @@ private fun UserListScreen(
         }
     }
 
-    Scaffold(topBar = { TopAppBar(title = { Text("GitHub User List") }) }, modifier = modifier) { innerPadding ->
-        PullToRefreshBox(isRefreshing = state.paginationState == PaginationState.LOADING, state = rememberPullToRefreshState(), onRefresh = {
-            onEvent(UserListScreenEvent.OnRefresh)
-        }) {
+    Scaffold(
+        topBar = { TopAppBar(title = { Text(stringResource(R.string.github_user_list)) }) },
+        modifier = modifier,
+    ) { innerPadding ->
+        PullToRefreshBox(
+            isRefreshing = state.paginationState == PaginationState.LOADING,
+            state = rememberPullToRefreshState(),
+            onRefresh = {
+                onEvent(UserListScreenEvent.OnRefresh)
+            },
+        ) {
             LazyColumn(
                 state = lazyListState,
                 modifier =
@@ -129,7 +139,11 @@ private fun UserListScreen(
                     ) {
                         AsyncImage(
                             model = it.avatarUrl,
-                            contentDescription = "${it.userName}'s avatar",
+                            contentDescription =
+                                context.getString(
+                                    R.string.avatar_content_desc,
+                                    it.userName,
+                                ),
                             placeholder = painterResource(R.drawable.github_mark),
                             error = painterResource(R.drawable.github_mark),
                             fallback = painterResource(R.drawable.github_mark),
@@ -162,12 +176,13 @@ private fun UserListScreen(
                                     modifier =
                                         Modifier
                                             .padding(8.dp),
-                                    text = "Refresh Loading",
+                                    text = stringResource(R.string.refresh_loading),
                                 )
 
                                 CircularProgressIndicator()
                             }
                         }
+
                         PaginationState.PAGINATING -> {
                             Column(
                                 modifier =
@@ -177,11 +192,12 @@ private fun UserListScreen(
                                 horizontalAlignment = Alignment.CenterHorizontally,
                                 verticalArrangement = Arrangement.Center,
                             ) {
-                                Text(text = "Pagination Loading")
+                                Text(text = stringResource(R.string.pagination_loading))
 
                                 CircularProgressIndicator()
                             }
                         }
+
                         PaginationState.PAGINATION_EXHAUST -> {
                             Column(
                                 modifier =
@@ -193,12 +209,13 @@ private fun UserListScreen(
                             ) {
                                 Icon(
                                     imageVector = Icons.Rounded.Face,
-                                    contentDescription = "",
+                                    contentDescription = null,
                                 )
 
-                                Text(text = "Nothing left.")
+                                Text(text = stringResource(R.string.nothing_left))
                             }
                         }
+
                         else -> {}
                     }
                 }
