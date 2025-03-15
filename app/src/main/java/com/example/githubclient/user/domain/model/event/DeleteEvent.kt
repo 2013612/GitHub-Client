@@ -1,5 +1,8 @@
 package com.example.githubclient.user.domain.model.event
 
+import com.example.githubclient.R
+import com.example.githubclient.common.presentation.utils.UiText
+
 data class DeleteEvent(
     override val id: String,
     override val isoDateTime: String,
@@ -7,10 +10,10 @@ data class DeleteEvent(
     val ref: String,
     val refType: GitRefType,
 ) : UserEvent() {
-    override fun getEventDesc(): String =
+    override fun getEventDesc(): UiText =
         when (refType) {
-            GitRefType.Branch -> "delete branch $ref in $repoName"
-            GitRefType.Tag -> "delete tag $ref in $repoName"
-            GitRefType.Repository -> ""
+            GitRefType.Branch -> UiText.StringResource(R.string.delete_branch_event_desc, arrayOf(ref, repoName))
+            GitRefType.Tag -> UiText.StringResource(R.string.delete_tag_event_desc, arrayOf(ref, repoName))
+            GitRefType.Repository -> UiText.DynamicString("")
         }
 }

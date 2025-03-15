@@ -1,6 +1,7 @@
 package com.example.githubclient.user.domain.model.event
 
 import com.example.githubclient.common.presentation.utils.DateTimeUtil
+import com.example.githubclient.common.presentation.utils.UiText
 import java.time.format.DateTimeFormatter
 
 sealed class UserEvent {
@@ -8,7 +9,7 @@ sealed class UserEvent {
 
     abstract val isoDateTime: String
 
-    abstract fun getEventDesc(): String
+    abstract fun getEventDesc(): UiText
 
     fun getEventDate(): String {
         val dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd")

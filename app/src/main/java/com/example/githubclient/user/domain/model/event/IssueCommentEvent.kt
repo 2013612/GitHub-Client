@@ -1,5 +1,8 @@
 package com.example.githubclient.user.domain.model.event
 
+import com.example.githubclient.R
+import com.example.githubclient.common.presentation.utils.UiText
+
 data class IssueCommentEvent(
     override val id: String,
     override val isoDateTime: String,
@@ -7,12 +10,20 @@ data class IssueCommentEvent(
     val issueName: String,
     val repoName: String,
 ) : UserEvent() {
-    override fun getEventDesc(): String = "${commentActionToString()} a comment on $issueName in $repoName"
+    override fun getEventDesc(): UiText =
+        UiText.StringResource(
+            R.string.issue_comment_event_desc,
+            arrayOf(
+                commentActionToUiText(),
+                issueName,
+                repoName,
+            ),
+        )
 
-    private fun commentActionToString(): String =
+    private fun commentActionToUiText(): UiText =
         when (action) {
-            CommentAction.Created -> "Created"
-            CommentAction.Edited -> "Edited"
-            CommentAction.Deleted -> "Deleted"
+            CommentAction.Created -> UiText.StringResource(R.string.created)
+            CommentAction.Edited -> UiText.StringResource(R.string.edited)
+            CommentAction.Deleted -> UiText.StringResource(R.string.deleted)
         }
 }

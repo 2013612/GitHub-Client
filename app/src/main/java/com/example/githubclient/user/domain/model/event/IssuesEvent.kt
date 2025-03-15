@@ -1,5 +1,8 @@
 package com.example.githubclient.user.domain.model.event
 
+import com.example.githubclient.R
+import com.example.githubclient.common.presentation.utils.UiText
+
 data class IssuesEvent(
     override val id: String,
     override val isoDateTime: String,
@@ -7,18 +10,19 @@ data class IssuesEvent(
     val issueName: String,
     val repoName: String,
 ) : UserEvent() {
-    override fun getEventDesc(): String = "${issueActionToString()} a issue $issueName in $repoName"
+    override fun getEventDesc(): UiText =
+        UiText.StringResource(R.string.issues_event_desc, arrayOf(issueActionToUiText(), issueName, repoName))
 
-    private fun issueActionToString(): String =
+    private fun issueActionToUiText(): UiText =
         when (action) {
-            IssueAction.Opened -> "Opened"
-            IssueAction.Edited -> "Edited"
-            IssueAction.Closed -> "Closed"
-            IssueAction.Reopened -> "Reopened"
-            IssueAction.Assigned -> "Assigned"
-            IssueAction.Unassigned -> "Unassigned"
-            IssueAction.Labeled -> "Labeled"
-            IssueAction.Unlabeled -> "Unlabeled"
+            IssueAction.Opened -> UiText.StringResource(R.string.opened)
+            IssueAction.Edited -> UiText.StringResource(R.string.edited)
+            IssueAction.Closed -> UiText.StringResource(R.string.closed)
+            IssueAction.Reopened -> UiText.StringResource(R.string.reopened)
+            IssueAction.Assigned -> UiText.StringResource(R.string.assigned)
+            IssueAction.Unassigned -> UiText.StringResource(R.string.unassigned)
+            IssueAction.Labeled -> UiText.StringResource(R.string.labeled)
+            IssueAction.Unlabeled -> UiText.StringResource(R.string.unlabeled)
         }
 }
 

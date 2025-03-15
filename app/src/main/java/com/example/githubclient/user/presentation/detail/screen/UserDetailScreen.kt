@@ -149,7 +149,7 @@ private fun UserDetailScreen(
                 EventRow(
                     date = event.getEventDate(),
                     time = event.getEventTime(),
-                    eventDesc = event.getEventDesc(),
+                    eventDesc = event.getEventDesc().asString(),
                     modifier = Modifier.padding(8.dp),
                 )
             }
