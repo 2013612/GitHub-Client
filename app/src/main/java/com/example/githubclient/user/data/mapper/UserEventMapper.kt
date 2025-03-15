@@ -17,6 +17,7 @@ import com.example.githubclient.user.data.model.event.RemotePullRequestReviewThr
 import com.example.githubclient.user.data.model.event.RemotePullRequestReviewThreadEventPayload
 import com.example.githubclient.user.data.model.event.RemotePushEventPayload
 import com.example.githubclient.user.data.model.event.RemoteReleaseEventPayload
+import com.example.githubclient.user.data.model.event.RemoteSponsorshipEventPayload
 import com.example.githubclient.user.domain.model.event.CommitCommentEvent
 import com.example.githubclient.user.domain.model.event.CreateEvent
 import com.example.githubclient.user.domain.model.event.DeleteEvent
@@ -32,6 +33,7 @@ import com.example.githubclient.user.domain.model.event.PullRequestReviewEvent
 import com.example.githubclient.user.domain.model.event.PullRequestReviewThreadEvent
 import com.example.githubclient.user.domain.model.event.PushEvent
 import com.example.githubclient.user.domain.model.event.ReleaseEvent
+import com.example.githubclient.user.domain.model.event.SponsorshipEvent
 import com.example.githubclient.user.domain.model.event.UserEvent
 
 fun RemotePublicUserEvent.toUserEvent(): UserEvent? =
@@ -141,6 +143,13 @@ fun RemotePublicUserEvent.toUserEvent(): UserEvent? =
 
         RemoteReleaseEventPayload ->
             ReleaseEvent(
+                id = id,
+                time = createdAt,
+                repoName = repo.name,
+            )
+
+        RemoteSponsorshipEventPayload ->
+            SponsorshipEvent(
                 id = id,
                 time = createdAt,
                 repoName = repo.name,
