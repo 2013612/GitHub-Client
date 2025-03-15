@@ -182,8 +182,8 @@ private fun UserDetailScreen(
                 HorizontalDivider(Modifier.padding(vertical = 8.dp))
             }
 
-            items(state.events, key = { it.getEventId() }) { event ->
-                EventRow(time = event.getEventTime(), eventDesc = event.getEventDesc())
+            items(state.events, key = { it.id }) { event ->
+                EventRow(date = event.getEventDate(), time = event.getEventTime(), eventDesc = event.getEventDesc())
             }
         }
     }
@@ -221,12 +221,16 @@ private fun DetailRow(
 
 @Composable
 private fun EventRow(
+    date: String,
     time: String,
     eventDesc: String,
     modifier: Modifier = Modifier,
 ) {
     Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
-        Text(text = time)
+        Column {
+            Text(text = date)
+            Text(text = time)
+        }
         Spacer(modifier = Modifier.width(8.dp))
         Text(text = eventDesc)
     }
@@ -265,13 +269,13 @@ private fun UserDetailScreenPreview() {
                             listOf(
                                 CommitCommentEvent(
                                     id = "1",
-                                    time = "time 1",
+                                    isoDateTime = "2025-03-13T00:49:56Z",
                                     commitId = "commitId 1",
                                     repoName = "repoName 1",
                                 ),
                                 CommitCommentEvent(
                                     id = "2",
-                                    time = "time 2",
+                                    isoDateTime = "2025-03-13T00:49:54Z",
                                     commitId = "commitId 2",
                                     repoName = "repoName 2",
                                 ),

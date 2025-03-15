@@ -1,11 +1,26 @@
 package com.example.githubclient.user.domain.model.event
 
-sealed class UserEvent {
-    abstract fun getEventId(): String
+import com.example.githubclient.common.presentation.utils.DateTimeUtil
+import java.time.format.DateTimeFormatter
 
-    abstract fun getEventTime(): String
+sealed class UserEvent {
+    abstract val id: String
+
+    abstract val isoDateTime: String
 
     abstract fun getEventDesc(): String
+
+    fun getEventDate(): String {
+        val dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+
+        return DateTimeUtil.format(isoDateTime, dateFormat)
+    }
+
+    fun getEventTime(): String {
+        val timeFormat = DateTimeFormatter.ofPattern("HH:mm:ss")
+
+        return DateTimeUtil.format(isoDateTime, timeFormat)
+    }
 }
 
 enum class GitRefType {

@@ -44,14 +44,14 @@ fun RemotePublicUserEvent.toUserEvent(): UserEvent? =
         is RemoteCommitCommentEventPayload ->
             CommitCommentEvent(
                 id = id,
-                time = createdAt,
+                isoDateTime = createdAt,
                 commitId = payload.comment.commitId,
                 repoName = repo.name,
             )
         is RemoteCreateEventPayload ->
             CreateEvent(
                 id = id,
-                time = createdAt,
+                isoDateTime = createdAt,
                 repoName = repo.name,
                 ref = payload.ref ?: "",
                 refType = payload.refType.toGitRefType(),
@@ -59,7 +59,7 @@ fun RemotePublicUserEvent.toUserEvent(): UserEvent? =
         is RemoteDeleteEventPayload ->
             DeleteEvent(
                 id = id,
-                time = createdAt,
+                isoDateTime = createdAt,
                 repoName = repo.name,
                 ref = payload.ref,
                 refType = payload.refType.toGitRefType(),
@@ -67,19 +67,19 @@ fun RemotePublicUserEvent.toUserEvent(): UserEvent? =
         is RemoteForkEventPayload ->
             ForkEvent(
                 id = id,
-                time = createdAt,
+                isoDateTime = createdAt,
                 repoName = payload.forkee.name,
             )
         is RemoteGollumEventPayload ->
             GollumEvent(
                 id = id,
-                time = createdAt,
+                isoDateTime = createdAt,
                 repoName = repo.name,
             )
         is RemoteIssueCommentEventPayload ->
             IssueCommentEvent(
                 id = id,
-                time = createdAt,
+                isoDateTime = createdAt,
                 action = payload.action.toCommentAction(),
                 issueName = payload.issue.title,
                 repoName = repo.name,
@@ -87,7 +87,7 @@ fun RemotePublicUserEvent.toUserEvent(): UserEvent? =
         is RemoteIssuesEventPayload ->
             IssuesEvent(
                 id = id,
-                time = createdAt,
+                isoDateTime = createdAt,
                 action = payload.action.toIssueAction(),
                 issueName = payload.issue.title,
                 repoName = repo.name,
@@ -95,20 +95,20 @@ fun RemotePublicUserEvent.toUserEvent(): UserEvent? =
         is RemoteMemberEventPayload ->
             MemberEvent(
                 id = id,
-                time = createdAt,
+                isoDateTime = createdAt,
                 memberName = payload.member.login,
                 repoName = repo.name,
             )
         RemotePublicEventPayload ->
             PublicEvent(
                 id = id,
-                time = createdAt,
+                isoDateTime = createdAt,
                 repoName = repo.name,
             )
         is RemotePullRequestEventPayload ->
             PullRequestEvent(
                 id = id,
-                time = createdAt,
+                isoDateTime = createdAt,
                 action = payload.action.toPullRequestAction(),
                 repoName = repo.name,
             )
@@ -116,21 +116,21 @@ fun RemotePublicUserEvent.toUserEvent(): UserEvent? =
         RemotePullRequestReviewEventPayload ->
             PullRequestReviewEvent(
                 id = id,
-                time = createdAt,
+                isoDateTime = createdAt,
                 repoName = repo.name,
             )
 
         RemotePullRequestReviewCommentEventPayload ->
             PullRequestReviewCommentEvent(
                 id = id,
-                time = createdAt,
+                isoDateTime = createdAt,
                 repoName = repo.name,
             )
 
         is RemotePullRequestReviewThreadEventPayload ->
             PullRequestReviewThreadEvent(
                 id = id,
-                time = createdAt,
+                isoDateTime = createdAt,
                 isResolved = payload.action == RemotePullRequestReviewThreadAction.Resolved,
                 repoName = repo.name,
             )
@@ -138,7 +138,7 @@ fun RemotePublicUserEvent.toUserEvent(): UserEvent? =
         is RemotePushEventPayload ->
             PushEvent(
                 id = id,
-                time = createdAt,
+                isoDateTime = createdAt,
                 commitCount = payload.size,
                 ref = payload.ref,
                 repoName = repo.name,
@@ -147,21 +147,21 @@ fun RemotePublicUserEvent.toUserEvent(): UserEvent? =
         RemoteReleaseEventPayload ->
             ReleaseEvent(
                 id = id,
-                time = createdAt,
+                isoDateTime = createdAt,
                 repoName = repo.name,
             )
 
         RemoteSponsorshipEventPayload ->
             SponsorshipEvent(
                 id = id,
-                time = createdAt,
+                isoDateTime = createdAt,
                 repoName = repo.name,
             )
 
         RemoteWatchEventPayload ->
             WatchEvent(
                 id = id,
-                time = createdAt,
+                isoDateTime = createdAt,
                 repoName = repo.name,
             )
 

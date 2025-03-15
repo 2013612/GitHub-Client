@@ -1,15 +1,11 @@
 package com.example.githubclient.user.domain.model.event
 
 data class PullRequestEvent(
-    val id: String,
-    val time: String,
+    override val id: String,
+    override val isoDateTime: String,
     val action: PullRequestAction,
     val repoName: String,
 ) : UserEvent() {
-    override fun getEventId(): String = id
-
-    override fun getEventTime(): String = time
-
     override fun getEventDesc(): String = "${pullRequestActionToString()} a pull request in $repoName"
 
     private fun pullRequestActionToString(): String =

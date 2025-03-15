@@ -1,16 +1,12 @@
 package com.example.githubclient.user.domain.model.event
 
 data class IssueCommentEvent(
-    val id: String,
-    val time: String,
+    override val id: String,
+    override val isoDateTime: String,
     val action: CommentAction,
     val issueName: String,
     val repoName: String,
 ) : UserEvent() {
-    override fun getEventId(): String = id
-
-    override fun getEventTime(): String = time
-
     override fun getEventDesc(): String = "${commentActionToString()} a comment on $issueName in $repoName"
 
     private fun commentActionToString(): String =
