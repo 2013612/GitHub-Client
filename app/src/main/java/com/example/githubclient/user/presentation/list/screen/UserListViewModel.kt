@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.githubclient.common.domain.model.onError
 import com.example.githubclient.common.domain.model.onSuccess
+import com.example.githubclient.common.presentation.model.PaginationState
 import com.example.githubclient.user.domain.IUserRepository
-import com.example.githubclient.user.presentation.list.model.ListState
 import com.example.githubclient.user.presentation.list.model.UserListScreenEvent
 import com.example.githubclient.user.presentation.list.model.UserListScreenState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -34,21 +34,21 @@ class UserListViewModel(
     }
 
     private fun loadUsers(since: Int) {
-        val listState = screenStateFlow.value.listState
+        val paginationState = screenStateFlow.value.paginationState
 
-        when (listState) {
-            ListState.LOADING, ListState.PAGINATING -> return
-            ListState.PAGINATION_EXHAUST -> if (since != 0) return
-            ListState.IDLE -> {}
+        when (paginationState) {
+            PaginationState.LOADING, PaginationState.PAGINATING -> return
+            PaginationState.PAGINATION_EXHAUST -> if (since != 0) return
+            PaginationState.IDLE -> {}
         }
 
         _screenStateFlow.update {
             it.copy(
-                listState =
+                paginationState =
                     if (since == 0) {
-                        ListState.LOADING
+                        PaginationState.LOADING
                     } else {
-                        ListState.PAGINATING
+                        PaginationState.PAGINATING
                     },
             )
         }
@@ -60,11 +60,11 @@ class UserListViewModel(
                     _screenStateFlow.update {
                         it.copy(
                             users = it.users + newUsers,
-                            listState =
+                            paginationState =
                                 if (newUsers.size < PAGE_SIZE) {
-                                    ListState.PAGINATION_EXHAUST
+                                    PaginationState.PAGINATION_EXHAUST
                                 } else {
-                                    ListState.IDLE
+                                    PaginationState.IDLE
                                 },
                         )
                     }
@@ -72,7 +72,7 @@ class UserListViewModel(
                     println("Error: $it")
                     _screenStateFlow.update {
                         it.copy(
-                            listState = ListState.IDLE,
+                            paginationState = PaginationState.IDLE,
                         )
                     }
                 }

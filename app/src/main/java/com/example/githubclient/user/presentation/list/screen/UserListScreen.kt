@@ -49,9 +49,9 @@ import coil3.compose.AsyncImage
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
 import com.example.githubclient.R
+import com.example.githubclient.common.presentation.model.PaginationState
 import com.example.githubclient.theme.GitHubClientTheme
 import com.example.githubclient.user.domain.model.SimpleUser
-import com.example.githubclient.user.presentation.list.model.ListState
 import com.example.githubclient.user.presentation.list.model.UserListScreenEvent
 import com.example.githubclient.user.presentation.list.model.UserListScreenState
 import kotlinx.serialization.Serializable
@@ -91,7 +91,7 @@ private fun UserListScreen(
     val shouldStartPaginate =
         remember {
             derivedStateOf {
-                state.listState == ListState.IDLE &&
+                state.paginationState == PaginationState.IDLE &&
                     (
                         lazyListState.layoutInfo.visibleItemsInfo
                             .lastOrNull()
@@ -107,7 +107,7 @@ private fun UserListScreen(
     }
 
     Scaffold(topBar = { TopAppBar(title = { Text("GitHub User List") }) }, modifier = modifier) { innerPadding ->
-        PullToRefreshBox(isRefreshing = state.listState == ListState.LOADING, state = rememberPullToRefreshState(), onRefresh = {
+        PullToRefreshBox(isRefreshing = state.paginationState == PaginationState.LOADING, state = rememberPullToRefreshState(), onRefresh = {
             onEvent(UserListScreenEvent.OnRefresh)
         }) {
             LazyColumn(
@@ -147,10 +147,10 @@ private fun UserListScreen(
                 }
 
                 item(
-                    key = state.listState,
+                    key = state.paginationState,
                 ) {
-                    when (state.listState) {
-                        ListState.LOADING -> {
+                    when (state.paginationState) {
+                        PaginationState.LOADING -> {
                             Column(
                                 modifier =
                                     Modifier
@@ -168,7 +168,7 @@ private fun UserListScreen(
                                 CircularProgressIndicator()
                             }
                         }
-                        ListState.PAGINATING -> {
+                        PaginationState.PAGINATING -> {
                             Column(
                                 modifier =
                                     Modifier
@@ -182,7 +182,7 @@ private fun UserListScreen(
                                 CircularProgressIndicator()
                             }
                         }
-                        ListState.PAGINATION_EXHAUST -> {
+                        PaginationState.PAGINATION_EXHAUST -> {
                             Column(
                                 modifier =
                                     Modifier
@@ -234,7 +234,7 @@ private fun UserListScreenPreview() {
                                     avatarUrl = "https://example.com/avatar.png",
                                 ),
                             ),
-                        listState = ListState.PAGINATION_EXHAUST,
+                        paginationState = PaginationState.PAGINATION_EXHAUST,
                     ),
                 onEvent = {},
             )
