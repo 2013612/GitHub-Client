@@ -1,27 +1,19 @@
 package com.example.githubclient.user.presentation.detail.screen
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,14 +21,9 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -44,15 +31,14 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import coil3.ColorImage
 import coil3.annotation.ExperimentalCoilApi
-import coil3.compose.AsyncImage
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
-import com.example.githubclient.R
 import com.example.githubclient.common.presentation.utils.ObserveAsEvents
 import com.example.githubclient.common.presentation.utils.showToast
 import com.example.githubclient.theme.GitHubClientTheme
 import com.example.githubclient.user.domain.model.UserProfile
 import com.example.githubclient.user.domain.model.event.CommitCommentEvent
+import com.example.githubclient.user.presentation.detail.component.UserDetailProfile
 import com.example.githubclient.user.presentation.detail.model.UserDetailScreenEvent
 import com.example.githubclient.user.presentation.detail.model.UserDetailScreenState
 import com.example.githubclient.user.presentation.detail.model.UserDetailViewModelEvent
@@ -115,66 +101,9 @@ private fun UserDetailScreen(
         )
     }, modifier = modifier) { innerPadding ->
         LazyColumn(modifier = Modifier.padding(innerPadding).padding(horizontal = 8.dp)) {
-            item {
-                Column {
-                    if (state.profile != null) {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            AsyncImage(
-                                model = state.profile.avatarUrl,
-                                contentDescription = "${state.profile.userName}'s avatar",
-                                placeholder = painterResource(R.drawable.github_mark),
-                                error = painterResource(R.drawable.github_mark),
-                                fallback = painterResource(R.drawable.github_mark),
-                                modifier =
-                                    Modifier.size(64.dp).clip(
-                                        CircleShape,
-                                    ),
-                            )
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Column {
-                                state.profile.name?.let {
-                                    Text(
-                                        text = it,
-                                        style = MaterialTheme.typography.headlineSmall,
-                                        fontWeight = FontWeight.Bold,
-                                    )
-                                }
-                                Text(
-                                    text = state.profile.userName,
-                                    style = MaterialTheme.typography.titleSmall,
-                                )
-                            }
-                        }
-                        Spacer(modifier = Modifier.height(24.dp))
-
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Icon(imageVector = Icons.Default.Person, contentDescription = null)
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text(text = "${state.profile.followers} followers")
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text(text = "${state.profile.following} following")
-                        }
-
-                        state.profile.company?.let {
-                            DetailRow(painter = painterResource(R.drawable.baseline_domain_24), text = it)
-                        }
-
-                        state.profile.location?.let {
-                            DetailRow(icon = Icons.Default.LocationOn, text = it)
-                        }
-
-                        state.profile.email?.let {
-                            DetailRow(icon = Icons.Default.Email, text = it)
-                        }
-
-                        state.profile.blog?.let {
-                            DetailRow(painter = painterResource(R.drawable.baseline_link_24), text = it)
-                        }
-
-                        state.profile.twitterUsername?.let {
-                            DetailRow(painter = painterResource(R.drawable.x_twitter_brands_solid), text = it)
-                        }
-                    }
+            state.profile?.let {
+                item {
+                    UserDetailProfile(profile = it)
                 }
             }
 
@@ -185,36 +114,6 @@ private fun UserDetailScreen(
             items(state.events, key = { it.id }) { event ->
                 EventRow(date = event.getEventDate(), time = event.getEventTime(), eventDesc = event.getEventDesc())
             }
-        }
-    }
-}
-
-@Composable
-private fun DetailRow(
-    icon: ImageVector,
-    text: String,
-) {
-    Column {
-        Spacer(modifier = Modifier.height(8.dp))
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(imageVector = icon, contentDescription = null)
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(text = text)
-        }
-    }
-}
-
-@Composable
-private fun DetailRow(
-    painter: Painter,
-    text: String,
-) {
-    Column {
-        Spacer(modifier = Modifier.height(8.dp))
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Image(painter = painter, contentDescription = null, modifier = Modifier.size(24.dp))
-            Spacer(modifier = Modifier.width(8.dp))
-            Text(text = text)
         }
     }
 }
