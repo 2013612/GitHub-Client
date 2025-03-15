@@ -17,6 +17,7 @@ data class RemoteWikiPage(
     val htmlUrl: String,
 )
 
+@Serializable
 enum class RemoteWikiAction {
     @SerialName("created")
     Created,

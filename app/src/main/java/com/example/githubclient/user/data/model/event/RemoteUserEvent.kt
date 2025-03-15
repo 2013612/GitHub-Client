@@ -52,6 +52,7 @@ enum class RemoteUserEventType {
     Unknown,
 }
 
+@Serializable
 enum class RemoteGitRefType {
     @SerialName("branch")
     Branch,
@@ -63,6 +64,7 @@ enum class RemoteGitRefType {
     Repository,
 }
 
+@Serializable
 enum class RemoteCommentAction {
     @SerialName("created")
     Created,
