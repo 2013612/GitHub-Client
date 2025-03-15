@@ -18,6 +18,7 @@ import com.example.githubclient.user.data.model.event.RemotePullRequestReviewThr
 import com.example.githubclient.user.data.model.event.RemotePushEventPayload
 import com.example.githubclient.user.data.model.event.RemoteReleaseEventPayload
 import com.example.githubclient.user.data.model.event.RemoteSponsorshipEventPayload
+import com.example.githubclient.user.data.model.event.RemoteUnknownEventPayload
 import com.example.githubclient.user.data.model.event.RemoteWatchEventPayload
 import com.example.githubclient.user.domain.model.event.CommitCommentEvent
 import com.example.githubclient.user.domain.model.event.CreateEvent
@@ -163,4 +164,6 @@ fun RemotePublicUserEvent.toUserEvent(): UserEvent? =
                 time = createdAt,
                 repoName = repo.name,
             )
+
+        RemoteUnknownEventPayload -> null
     }

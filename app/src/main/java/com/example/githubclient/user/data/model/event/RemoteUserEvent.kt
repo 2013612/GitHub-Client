@@ -3,7 +3,7 @@ package com.example.githubclient.user.data.model.event
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-@Serializable
+@Serializable(with = RemotePublicUserEventSerializer::class)
 data class RemotePublicUserEvent(
     val id: String,
     val type: RemoteUserEventType,
@@ -32,6 +32,10 @@ data class RemoteRepository(
 @Serializable
 sealed class RemoteUserEventPayload
 
+@Serializable
+data object RemoteUnknownEventPayload : RemoteUserEventPayload()
+
+@Serializable
 enum class RemoteUserEventType {
     CommitCommentEvent,
     CreateEvent,
@@ -45,8 +49,10 @@ enum class RemoteUserEventType {
     PullRequestEvent,
     PullRequestReviewEvent,
     PullRequestReviewCommentEvent,
+    PullRequestReviewThreadEvent,
     PushEvent,
     ReleaseEvent,
+    SponsorshipEvent,
     WatchEvent,
     Unknown,
 }
