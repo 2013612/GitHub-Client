@@ -5,4 +5,8 @@
     <string name="refresh_loading">Refresh Loading</string>
     <string name="pagination_loading">Pagination Loading</string>
     <string name="nothing_left">Nothing Left</string>
+    <string name="no_internet_connection">No internet connection</string>
+    <string name="fetch_user_fail">Fetch User Fail</string>
+    <string name="user_detail">User Detail</string>
+    <string name="back_button">back button</string>
 </resources>

@@ -33,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -42,6 +43,7 @@ import coil3.ColorImage
 import coil3.annotation.ExperimentalCoilApi
 import coil3.compose.AsyncImagePreviewHandler
 import coil3.compose.LocalAsyncImagePreviewHandler
+import com.example.githubclient.R
 import com.example.githubclient.common.presentation.model.PaginationState
 import com.example.githubclient.common.presentation.utils.ObserveAsEvents
 import com.example.githubclient.common.presentation.utils.showToast
@@ -67,9 +69,9 @@ fun NavGraphBuilder.userDetailScreen(navigateBack: () -> Unit) {
             when (event) {
                 is UserDetailViewModelEvent.OnFetchError -> {
                     if (event.isNoInternetError) {
-                        context.showToast("No internet connection")
+                        context.showToast(context.getString(R.string.no_internet_connection))
                     } else {
-                        context.showToast("Fetch User Fail")
+                        context.showToast(context.getString(R.string.fetch_user_fail))
                     }
 
                     navigateBack()
@@ -121,12 +123,12 @@ private fun UserDetailScreen(
 
     Scaffold(topBar = {
         CenterAlignedTopAppBar(
-            title = { Text("User Detail") },
+            title = { Text(stringResource(R.string.user_detail)) },
             navigationIcon = {
                 IconButton(onClick = { onEvent(UserDetailScreenEvent.OnBackClicked) }) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = "back button",
+                        contentDescription = stringResource(R.string.back_button),
                     )
                 }
             },
@@ -165,7 +167,7 @@ private fun UserDetailScreen(
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.Center,
                         ) {
-                            Text(text = "Pagination Loading")
+                            Text(text = stringResource(R.string.pagination_loading))
 
                             CircularProgressIndicator()
                         }
@@ -181,10 +183,10 @@ private fun UserDetailScreen(
                         ) {
                             Icon(
                                 imageVector = Icons.Rounded.Face,
-                                contentDescription = "",
+                                contentDescription = null,
                             )
 
-                            Text(text = "Nothing left.")
+                            Text(text = stringResource(R.string.nothing_left))
                         }
                     }
                     else -> {}
