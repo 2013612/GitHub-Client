@@ -100,10 +100,10 @@ private fun UserDetailScreen(
             },
         )
     }, modifier = modifier) { innerPadding ->
-        LazyColumn(modifier = Modifier.padding(innerPadding).padding(horizontal = 8.dp)) {
+        LazyColumn(modifier = Modifier.padding(innerPadding)) {
             state.profile?.let {
                 item {
-                    UserDetailProfile(profile = it)
+                    UserDetailProfile(profile = it, modifier = Modifier.padding(horizontal = 8.dp))
                 }
             }
 
@@ -112,7 +112,12 @@ private fun UserDetailScreen(
             }
 
             items(state.events, key = { it.id }) { event ->
-                EventRow(date = event.getEventDate(), time = event.getEventTime(), eventDesc = event.getEventDesc())
+                EventRow(
+                    date = event.getEventDate(),
+                    time = event.getEventTime(),
+                    eventDesc = event.getEventDesc(),
+                    modifier = Modifier.padding(horizontal = 8.dp),
+                )
             }
         }
     }
