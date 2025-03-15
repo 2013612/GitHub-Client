@@ -116,7 +116,7 @@ private fun UserDetailScreen(
                     date = event.getEventDate(),
                     time = event.getEventTime(),
                     eventDesc = event.getEventDesc(),
-                    modifier = Modifier.padding(horizontal = 8.dp),
+                    modifier = Modifier.padding(8.dp),
                 )
             }
         }
@@ -131,7 +131,7 @@ private fun EventRow(
     modifier: Modifier = Modifier,
 ) {
     Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
-        Column {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Text(text = date)
             Text(text = time)
         }
