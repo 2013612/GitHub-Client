@@ -13,6 +13,8 @@ import com.example.githubclient.user.data.model.event.RemotePublicUserEvent
 import com.example.githubclient.user.data.model.event.RemotePullRequestEventPayload
 import com.example.githubclient.user.data.model.event.RemotePullRequestReviewCommentEventPayload
 import com.example.githubclient.user.data.model.event.RemotePullRequestReviewEventPayload
+import com.example.githubclient.user.data.model.event.RemotePullRequestReviewThreadAction
+import com.example.githubclient.user.data.model.event.RemotePullRequestReviewThreadEventPayload
 import com.example.githubclient.user.domain.model.event.CommitCommentEvent
 import com.example.githubclient.user.domain.model.event.CreateEvent
 import com.example.githubclient.user.domain.model.event.DeleteEvent
@@ -25,6 +27,7 @@ import com.example.githubclient.user.domain.model.event.PublicEvent
 import com.example.githubclient.user.domain.model.event.PullRequestEvent
 import com.example.githubclient.user.domain.model.event.PullRequestReviewCommentEvent
 import com.example.githubclient.user.domain.model.event.PullRequestReviewEvent
+import com.example.githubclient.user.domain.model.event.PullRequestReviewThreadEvent
 import com.example.githubclient.user.domain.model.event.UserEvent
 
 fun RemotePublicUserEvent.toUserEvent(): UserEvent? =
@@ -112,6 +115,14 @@ fun RemotePublicUserEvent.toUserEvent(): UserEvent? =
             PullRequestReviewCommentEvent(
                 id = id,
                 time = createdAt,
+                repoName = repo.name,
+            )
+
+        is RemotePullRequestReviewThreadEventPayload ->
+            PullRequestReviewThreadEvent(
+                id = id,
+                time = createdAt,
+                isResolved = payload.action == RemotePullRequestReviewThreadAction.Resolved,
                 repoName = repo.name,
             )
     }
