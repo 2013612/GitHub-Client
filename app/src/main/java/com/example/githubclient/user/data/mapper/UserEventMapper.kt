@@ -11,6 +11,7 @@ import com.example.githubclient.user.data.model.event.RemoteMemberEventPayload
 import com.example.githubclient.user.data.model.event.RemotePublicEventPayload
 import com.example.githubclient.user.data.model.event.RemotePublicUserEvent
 import com.example.githubclient.user.data.model.event.RemotePullRequestEventPayload
+import com.example.githubclient.user.data.model.event.RemotePullRequestReviewEventPayload
 import com.example.githubclient.user.domain.model.event.CommitCommentEvent
 import com.example.githubclient.user.domain.model.event.CreateEvent
 import com.example.githubclient.user.domain.model.event.DeleteEvent
@@ -21,6 +22,7 @@ import com.example.githubclient.user.domain.model.event.IssuesEvent
 import com.example.githubclient.user.domain.model.event.MemberEvent
 import com.example.githubclient.user.domain.model.event.PublicEvent
 import com.example.githubclient.user.domain.model.event.PullRequestEvent
+import com.example.githubclient.user.domain.model.event.PullRequestReviewEvent
 import com.example.githubclient.user.domain.model.event.UserEvent
 
 fun RemotePublicUserEvent.toUserEvent(): UserEvent? =
@@ -94,6 +96,13 @@ fun RemotePublicUserEvent.toUserEvent(): UserEvent? =
                 id = id,
                 time = createdAt,
                 action = payload.action.toPullRequestAction(),
+                repoName = repo.name,
+            )
+
+        RemotePullRequestReviewEventPayload ->
+            PullRequestReviewEvent(
+                id = id,
+                time = createdAt,
                 repoName = repo.name,
             )
     }
