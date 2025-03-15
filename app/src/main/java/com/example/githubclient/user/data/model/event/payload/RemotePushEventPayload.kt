@@ -1,4 +1,4 @@
-package com.example.githubclient.user.data.model.event
+package com.example.githubclient.user.data.model.event.payload
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -11,4 +11,4 @@ data class RemotePushEventPayload(
     @SerialName("distinct_size")
     val distinctSize: Int,
     val ref: String,
-) : RemoteUserEventPayload()
+) : RemoteUserEventPayload

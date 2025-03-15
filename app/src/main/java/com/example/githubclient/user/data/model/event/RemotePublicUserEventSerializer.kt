@@ -1,5 +1,24 @@
 package com.example.githubclient.user.data.model.event
 
+import com.example.githubclient.user.data.model.event.payload.RemoteCommitCommentEventPayload
+import com.example.githubclient.user.data.model.event.payload.RemoteCreateEventPayload
+import com.example.githubclient.user.data.model.event.payload.RemoteDeleteEventPayload
+import com.example.githubclient.user.data.model.event.payload.RemoteForkEventPayload
+import com.example.githubclient.user.data.model.event.payload.RemoteGollumEventPayload
+import com.example.githubclient.user.data.model.event.payload.RemoteIssueCommentEventPayload
+import com.example.githubclient.user.data.model.event.payload.RemoteIssuesEventPayload
+import com.example.githubclient.user.data.model.event.payload.RemoteMemberEventPayload
+import com.example.githubclient.user.data.model.event.payload.RemotePublicEventPayload
+import com.example.githubclient.user.data.model.event.payload.RemotePullRequestEventPayload
+import com.example.githubclient.user.data.model.event.payload.RemotePullRequestReviewCommentEventPayload
+import com.example.githubclient.user.data.model.event.payload.RemotePullRequestReviewEventPayload
+import com.example.githubclient.user.data.model.event.payload.RemotePullRequestReviewThreadEventPayload
+import com.example.githubclient.user.data.model.event.payload.RemotePushEventPayload
+import com.example.githubclient.user.data.model.event.payload.RemoteReleaseEventPayload
+import com.example.githubclient.user.data.model.event.payload.RemoteSponsorshipEventPayload
+import com.example.githubclient.user.data.model.event.payload.RemoteUnknownEventPayload
+import com.example.githubclient.user.data.model.event.payload.RemoteUserEventPayload
+import com.example.githubclient.user.data.model.event.payload.RemoteWatchEventPayload
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.descriptors.buildClassSerialDescriptor
@@ -36,26 +55,66 @@ object RemotePublicUserEventSerializer : KSerializer<RemotePublicUserEvent> {
 
             val payload =
                 when (type) {
-                    RemoteUserEventType.PushEvent -> json.decodeFromJsonElement(RemotePushEventPayload.serializer(), payloadElement)
-                    RemoteUserEventType.CreateEvent -> json.decodeFromJsonElement(RemoteCreateEventPayload.serializer(), payloadElement)
-                    RemoteUserEventType.IssuesEvent -> json.decodeFromJsonElement(RemoteIssuesEventPayload.serializer(), payloadElement)
+                    RemoteUserEventType.PushEvent ->
+                        json.decodeFromJsonElement(
+                            RemotePushEventPayload.serializer(),
+                            payloadElement,
+                        )
+                    RemoteUserEventType.CreateEvent ->
+                        json.decodeFromJsonElement(
+                            RemoteCreateEventPayload.serializer(),
+                            payloadElement,
+                        )
+                    RemoteUserEventType.IssuesEvent ->
+                        json.decodeFromJsonElement(
+                            RemoteIssuesEventPayload.serializer(),
+                            payloadElement,
+                        )
                     RemoteUserEventType.PullRequestEvent ->
                         json.decodeFromJsonElement(
                             RemotePullRequestEventPayload.serializer(),
                             payloadElement,
                         )
-                    RemoteUserEventType.WatchEvent -> json.decodeFromJsonElement(RemoteWatchEventPayload.serializer(), payloadElement)
-                    RemoteUserEventType.ForkEvent -> json.decodeFromJsonElement(RemoteForkEventPayload.serializer(), payloadElement)
-                    RemoteUserEventType.DeleteEvent -> json.decodeFromJsonElement(RemoteDeleteEventPayload.serializer(), payloadElement)
-                    RemoteUserEventType.PublicEvent -> json.decodeFromJsonElement(RemotePublicEventPayload.serializer(), payloadElement)
+                    RemoteUserEventType.WatchEvent ->
+                        json.decodeFromJsonElement(
+                            RemoteWatchEventPayload.serializer(),
+                            payloadElement,
+                        )
+                    RemoteUserEventType.ForkEvent ->
+                        json.decodeFromJsonElement(
+                            RemoteForkEventPayload.serializer(),
+                            payloadElement,
+                        )
+                    RemoteUserEventType.DeleteEvent ->
+                        json.decodeFromJsonElement(
+                            RemoteDeleteEventPayload.serializer(),
+                            payloadElement,
+                        )
+                    RemoteUserEventType.PublicEvent ->
+                        json.decodeFromJsonElement(
+                            RemotePublicEventPayload.serializer(),
+                            payloadElement,
+                        )
                     RemoteUserEventType.IssueCommentEvent ->
                         json.decodeFromJsonElement(
                             RemoteIssueCommentEventPayload.serializer(),
                             payloadElement,
                         )
-                    RemoteUserEventType.ReleaseEvent -> json.decodeFromJsonElement(RemoteReleaseEventPayload.serializer(), payloadElement)
-                    RemoteUserEventType.MemberEvent -> json.decodeFromJsonElement(RemoteMemberEventPayload.serializer(), payloadElement)
-                    RemoteUserEventType.GollumEvent -> json.decodeFromJsonElement(RemoteGollumEventPayload.serializer(), payloadElement)
+                    RemoteUserEventType.ReleaseEvent ->
+                        json.decodeFromJsonElement(
+                            RemoteReleaseEventPayload.serializer(),
+                            payloadElement,
+                        )
+                    RemoteUserEventType.MemberEvent ->
+                        json.decodeFromJsonElement(
+                            RemoteMemberEventPayload.serializer(),
+                            payloadElement,
+                        )
+                    RemoteUserEventType.GollumEvent ->
+                        json.decodeFromJsonElement(
+                            RemoteGollumEventPayload.serializer(),
+                            payloadElement,
+                        )
                     RemoteUserEventType.PullRequestReviewEvent ->
                         json.decodeFromJsonElement(
                             RemotePullRequestReviewEventPayload.serializer(),

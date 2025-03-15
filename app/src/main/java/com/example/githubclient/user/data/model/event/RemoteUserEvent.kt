@@ -1,5 +1,6 @@
 package com.example.githubclient.user.data.model.event
 
+import com.example.githubclient.user.data.model.event.payload.RemoteUserEventPayload
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -28,12 +29,6 @@ data class RemoteRepository(
     val name: String,
     val url: String,
 )
-
-@Serializable
-sealed class RemoteUserEventPayload
-
-@Serializable
-data object RemoteUnknownEventPayload : RemoteUserEventPayload()
 
 @Serializable
 enum class RemoteUserEventType {

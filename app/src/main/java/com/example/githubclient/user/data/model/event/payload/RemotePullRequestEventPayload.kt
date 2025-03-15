@@ -1,4 +1,4 @@
-package com.example.githubclient.user.data.model.event
+package com.example.githubclient.user.data.model.event.payload
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -8,7 +8,7 @@ data class RemotePullRequestEventPayload(
     val action: RemotePullRequestAction,
     @SerialName("number")
     val number: Int,
-) : RemoteUserEventPayload()
+) : RemoteUserEventPayload
 
 enum class RemotePullRequestAction {
     @SerialName("assigned")

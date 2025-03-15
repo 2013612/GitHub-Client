@@ -1,6 +1,6 @@
 package com.example.githubclient.user.data.mapper
 
-import com.example.githubclient.user.data.model.event.RemotePullRequestAction
+import com.example.githubclient.user.data.model.event.payload.RemotePullRequestAction
 import com.example.githubclient.user.domain.model.event.PullRequestAction
 
 fun RemotePullRequestAction.toPullRequestAction() =

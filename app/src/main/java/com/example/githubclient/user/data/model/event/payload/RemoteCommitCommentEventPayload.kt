@@ -1,5 +1,6 @@
-package com.example.githubclient.user.data.model.event
+package com.example.githubclient.user.data.model.event.payload
 
+import com.example.githubclient.user.data.model.event.RemoteCommentAction
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -7,7 +8,7 @@ import kotlinx.serialization.Serializable
 data class RemoteCommitCommentEventPayload(
     val action: RemoteCommentAction,
     val comment: RemoteCommitComment,
-) : RemoteUserEventPayload()
+) : RemoteUserEventPayload
 
 @Serializable
 data class RemoteCommitComment(

@@ -1,5 +1,6 @@
-package com.example.githubclient.user.data.model.event
+package com.example.githubclient.user.data.model.event.payload
 
+import com.example.githubclient.user.data.model.event.payload.RemoteIssue
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -7,7 +8,7 @@ import kotlinx.serialization.Serializable
 data class RemoteIssuesEventPayload(
     val action: RemoteIssueAction,
     val issue: RemoteIssue,
-) : RemoteUserEventPayload()
+) : RemoteUserEventPayload
 
 enum class RemoteIssueAction {
     @SerialName("opened")

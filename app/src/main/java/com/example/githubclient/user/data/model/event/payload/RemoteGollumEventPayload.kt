@@ -1,4 +1,4 @@
-package com.example.githubclient.user.data.model.event
+package com.example.githubclient.user.data.model.event.payload
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class RemoteGollumEventPayload(
     val pages: List<RemoteWikiPage>,
-) : RemoteUserEventPayload()
+) : RemoteUserEventPayload
 
 @Serializable
 data class RemoteWikiPage(

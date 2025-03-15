@@ -1,6 +1,6 @@
 package com.example.githubclient.user.data.mapper
 
-import com.example.githubclient.user.data.model.event.RemoteIssueAction
+import com.example.githubclient.user.data.model.event.payload.RemoteIssueAction
 import com.example.githubclient.user.domain.model.event.IssueAction
 
 fun RemoteIssueAction.toIssueAction(): IssueAction =
