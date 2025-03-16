@@ -40,6 +40,8 @@ class UserDetailViewModel(
     fun onEvent(event: UserDetailScreenEvent) {
         when (event) {
             UserDetailScreenEvent.OnLoadMore -> fetchUserEvents()
+            UserDetailScreenEvent.OnBackClicked -> {}
+            is UserDetailScreenEvent.OnTabClicked -> _screenStateFlow.update { it.copy(selectedTabIndex = event.index) }
         }
     }
 

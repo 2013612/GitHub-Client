@@ -47,4 +47,6 @@
     <string name="watch_event_desc">關注了 %1$s</string>
     <string name="num_followers">%1$s 追蹤者</string>
     <string name="num_following">%1$s 追蹤中</string>
+    <string name="profile">個人資料</string>
+    <string name="events">活動</string>
 </resources>

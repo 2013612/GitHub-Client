@@ -8,4 +8,5 @@ data class UserDetailScreenState(
     val profile: UserProfile? = null,
     val events: List<UserEvent> = emptyList(),
     val paginationState: PaginationState = PaginationState.IDLE,
+    val selectedTabIndex: Int = 0,
 )

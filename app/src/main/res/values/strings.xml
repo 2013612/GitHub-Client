@@ -46,4 +46,6 @@
     <string name="watch_event_desc">Stared %1$s</string>
     <string name="num_followers">%1$s followers</string>
     <string name="num_following">%1$s following</string>
+    <string name="profile">Profile</string>
+    <string name="events">Events</string>
 </resources>

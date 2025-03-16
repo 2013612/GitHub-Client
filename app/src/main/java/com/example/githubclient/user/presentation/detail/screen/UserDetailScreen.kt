@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
@@ -16,10 +17,11 @@ import androidx.compose.material.icons.rounded.Face
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -111,7 +113,7 @@ private fun UserDetailScreen(
                         lazyListState.layoutInfo.visibleItemsInfo
                             .lastOrNull()
                             ?.index ?: Int.MIN_VALUE
-                    ) >= (lazyListState.layoutInfo.totalItemsCount - 20)
+                    ) >= (lazyListState.layoutInfo.totalItemsCount - 5)
             }
         }
 
@@ -134,62 +136,76 @@ private fun UserDetailScreen(
             },
         )
     }, modifier = modifier) { innerPadding ->
-        LazyColumn(state = lazyListState, modifier = Modifier.padding(innerPadding)) {
-            state.profile?.let {
-                item {
-                    UserDetailProfile(profile = it, modifier = Modifier.padding(horizontal = 8.dp))
+        Column(modifier = Modifier.padding(innerPadding)) {
+            TabRow(selectedTabIndex = state.selectedTabIndex) {
+                Tab(selected = state.selectedTabIndex == 0, onClick = {
+                    onEvent(UserDetailScreenEvent.OnTabClicked(0))
+                }) {
+                    Text(stringResource(R.string.profile))
+                }
+
+                Tab(selected = state.selectedTabIndex == 1, onClick = {
+                    onEvent(UserDetailScreenEvent.OnTabClicked(1))
+                }) {
+                    Text(stringResource(R.string.events))
                 }
             }
 
-            item {
-                HorizontalDivider(Modifier.padding(vertical = 8.dp))
-            }
+            Spacer(modifier = Modifier.height(16.dp))
 
-            items(state.events, key = { it.id }) { event ->
-                EventRow(
-                    date = event.getEventDate(),
-                    time = event.getEventTime(),
-                    eventDesc = event.getEventDesc().asString(),
-                    modifier = Modifier.padding(8.dp),
-                )
-            }
+            if (state.selectedTabIndex == 0) {
+                state.profile?.let {
+                    UserDetailProfile(profile = it, modifier = Modifier.padding(horizontal = 8.dp))
+                }
+            } else {
+                LazyColumn(state = lazyListState) {
+                    items(state.events, key = { it.id }) { event ->
+                        EventRow(
+                            date = event.getEventDate(),
+                            time = event.getEventTime(),
+                            eventDesc = event.getEventDesc().asString(),
+                            modifier = Modifier.padding(8.dp),
+                        )
+                    }
 
-            item(
-                key = state.paginationState,
-            ) {
-                when (state.paginationState) {
-                    PaginationState.PAGINATING -> {
-                        Column(
-                            modifier =
-                                Modifier
-                                    .fillMaxWidth()
-                                    .padding(vertical = 16.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.Center,
-                        ) {
-                            Text(text = stringResource(R.string.pagination_loading))
+                    item(
+                        key = state.paginationState,
+                    ) {
+                        when (state.paginationState) {
+                            PaginationState.PAGINATING -> {
+                                Column(
+                                    modifier =
+                                        Modifier
+                                            .fillMaxWidth()
+                                            .padding(vertical = 16.dp),
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    verticalArrangement = Arrangement.Center,
+                                ) {
+                                    Text(text = stringResource(R.string.pagination_loading))
 
-                            CircularProgressIndicator()
+                                    CircularProgressIndicator()
+                                }
+                            }
+                            PaginationState.PAGINATION_EXHAUST -> {
+                                Column(
+                                    modifier =
+                                        Modifier
+                                            .fillMaxWidth()
+                                            .padding(horizontal = 6.dp, vertical = 16.dp),
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    verticalArrangement = Arrangement.Center,
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Rounded.Face,
+                                        contentDescription = null,
+                                    )
+
+                                    Text(text = stringResource(R.string.nothing_left))
+                                }
+                            }
+                            else -> {}
                         }
                     }
-                    PaginationState.PAGINATION_EXHAUST -> {
-                        Column(
-                            modifier =
-                                Modifier
-                                    .fillMaxWidth()
-                                    .padding(horizontal = 6.dp, vertical = 16.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.Center,
-                        ) {
-                            Icon(
-                                imageVector = Icons.Rounded.Face,
-                                contentDescription = null,
-                            )
-
-                            Text(text = stringResource(R.string.nothing_left))
-                        }
-                    }
-                    else -> {}
                 }
             }
         }

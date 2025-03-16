@@ -1,7 +1,11 @@
 package com.example.githubclient.user.presentation.detail.model
 
-interface UserDetailScreenEvent {
-    object OnBackClicked : UserDetailScreenEvent
+sealed interface UserDetailScreenEvent {
+    data object OnBackClicked : UserDetailScreenEvent
 
-    object OnLoadMore : UserDetailScreenEvent
+    data object OnLoadMore : UserDetailScreenEvent
+
+    data class OnTabClicked(
+        val index: Int,
+    ) : UserDetailScreenEvent
 }
