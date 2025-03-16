@@ -60,7 +60,7 @@ class UserDetailViewModel(
     }
 
     private fun fetchUserEvents() {
-        val userName = "kenkoooo"
+        val userName = routeArguments.userName
         val paginationState = screenStateFlow.value.paginationState
 
         when (paginationState) {
