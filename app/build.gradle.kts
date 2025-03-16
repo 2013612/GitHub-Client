@@ -75,4 +75,6 @@ dependencies {
     implementation(libs.coil.network.okhttp)
 
     implementation(libs.kotlinx.datetime)
+
+    implementation(libs.androidx.core.splashscreen)
 }
